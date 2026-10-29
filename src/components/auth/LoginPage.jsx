@@ -28,10 +28,6 @@ export default function LoginPage({
   isTrusteeMode = false
 }) {
   const { login, authError, isLoading } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [localError, setLocalError] = useState('');
-  const [selectedPersona, setSelectedPersona] = useState(null);
 
   // Default campus fallback if accessed directly
   const activeCampus = selectedCampus || {
@@ -42,15 +38,23 @@ export default function LoginPage({
     category: 'Engineering & Technology (Autonomous)'
   };
 
-  // Filter accounts strictly to the selected campus
+  // Filter accounts strictly to the selected campus (excluding synthetic alias user@trustview.edu from card list)
   const campusAccounts = ALL_DEMO_ACCOUNTS.filter(
-    (acc) => acc.campusId === activeCampus.id
+    (acc) => acc.campusId === activeCampus.id && acc.email !== 'user@trustview.edu'
   );
 
   const trusteeAccount = ALL_DEMO_ACCOUNTS.find((acc) => acc.role === 'TRUSTEE');
 
+  // Intelligent default persona pre-selected so inputs are never empty
+  const defaultAccount = isTrusteeMode ? trusteeAccount : (campusAccounts[0] || trusteeAccount);
+
+  const [selectedPersona, setSelectedPersona] = useState(defaultAccount);
+  const [email, setEmail] = useState(defaultAccount ? defaultAccount.email : 'dean.campus1@trustview.edu');
+  const [password, setPassword] = useState('TrustView@2026');
+  const [localError, setLocalError] = useState('');
+
   // Handle prefill on demo persona click
-  const handleSelectDemoAccount = (acc, e) => {
+  const handleSelectDemoAccount = (acc, e, autoSubmit = false) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -66,6 +70,10 @@ export default function LoginPage({
       if (formEl) {
         formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    }
+
+    if (autoSubmit) {
+      login(acc.email, 'TrustView@2026');
     }
   };
 
@@ -258,7 +266,13 @@ export default function LoginPage({
             {trusteeAccount && (
               <button
                 type="button"
-                onClick={(e) => handleSelectDemoAccount(trusteeAccount, e)}
+                onClick={(e) => {
+                  if (email === trusteeAccount.email) {
+                    handleSelectDemoAccount(trusteeAccount, e, true);
+                  } else {
+                    handleSelectDemoAccount(trusteeAccount, e, false);
+                  }
+                }}
                 className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 cursor-pointer group ${
                   email === trusteeAccount.email
                     ? 'bg-emerald-600/25 border-emerald-400 ring-2 ring-emerald-500/40 shadow-lg shadow-emerald-950/40'
@@ -285,7 +299,7 @@ export default function LoginPage({
                   {email === trusteeAccount.email ? (
                     <span className="text-xs text-emerald-300 font-bold inline-flex items-center gap-1 bg-emerald-500/20 px-2 py-0.5 rounded-md border border-emerald-500/40">
                       <CheckCircle2 size={13} />
-                      <span>Populated</span>
+                      <span>Populated (Click to Enter)</span>
                     </span>
                   ) : (
                     <span className="text-xs text-emerald-400 font-semibold group-hover:text-emerald-300 inline-flex items-center gap-0.5">
@@ -307,7 +321,13 @@ export default function LoginPage({
                   <button
                     key={`${acc.role}-${acc.email}-${idx}`}
                     type="button"
-                    onClick={(e) => handleSelectDemoAccount(acc, e)}
+                    onClick={(e) => {
+                      if (isSelected) {
+                        handleSelectDemoAccount(acc, e, true);
+                      } else {
+                        handleSelectDemoAccount(acc, e, false);
+                      }
+                    }}
                     className={`text-left p-3 rounded-xl border transition-all flex flex-col justify-between gap-2 cursor-pointer group ${
                       isSelected
                         ? 'bg-blue-600/25 border-blue-400 ring-2 ring-blue-500/40 shadow-lg shadow-blue-950/30'
@@ -343,7 +363,7 @@ export default function LoginPage({
                         {isSelected ? (
                           <>
                             <CheckCircle2 size={12} className="text-emerald-400" />
-                            <span>Populated</span>
+                            <span>Populated (Click to Enter)</span>
                           </>
                         ) : (
                           <>

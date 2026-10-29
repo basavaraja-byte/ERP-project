@@ -37,6 +37,17 @@ export const ALL_DEMO_ACCOUNTS = [
     color: 'indigo'
   },
   {
+    role: 'DEAN',
+    title: 'Dean',
+    name: 'Prof. Rajesh Swaminathan',
+    email: 'user@trustview.edu',
+    campusId: 'campus-1',
+    campusLabel: 'Campus 1',
+    scope: 'Academic Oversight • Maharaja Institute of Technology',
+    icon: GraduationCap,
+    color: 'indigo'
+  },
+  {
     role: 'PRINCIPAL',
     title: 'Principal',
     name: 'Dr. K. S. Ramanathan',

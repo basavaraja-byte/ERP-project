@@ -10,32 +10,7 @@ const clientOriginEnv = process.env.CLIENT_ORIGIN || process.env.CORS_ORIGIN || 
 const configuredOrigins = clientOriginEnv.split(',').map(o => o.trim()).filter(Boolean);
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, or same-origin)
-    if (!origin) return callback(null, true);
-
-    // Wildcard authorization
-    if (configuredOrigins.includes('*')) {
-      return callback(null, true);
-    }
-
-    // Match against configured origins
-    if (configuredOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    // Allow any Vercel production or preview deployment (*.vercel.app)
-    if (/^https:\/\/[a-zA-Z0-9_\-.]+\.vercel\.app$/.test(origin)) {
-      return callback(null, true);
-    }
-
-    // Also allow localhost/127.0.0.1 variants for local dev convenience
-    if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-      return callback(null, true);
-    }
-
-    callback(new Error(`CORS policy does not allow access from origin ${origin}`));
-  },
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']

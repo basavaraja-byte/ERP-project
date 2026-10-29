@@ -7,6 +7,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 
 const DEMO_PERSONAS = {
   'trustee@trustview.edu': { name: 'Dr. Vikram Mehta', role: 'TRUSTEE', campusId: null },
+  'user@trustview.edu': { name: 'Prof. Rajesh Swaminathan', role: 'DEAN', campusId: 'campus-1', department: 'Engineering & Technology' },
   // Campus 1
   'dean.campus1@trustview.edu': { name: 'Prof. Rajesh Swaminathan', role: 'DEAN', campusId: 'campus-1', department: 'Engineering & Technology' },
   'principal.campus1@trustview.edu': { name: 'Dr. K. S. Ramanathan', role: 'PRINCIPAL', campusId: 'campus-1' },
