@@ -1,6 +1,7 @@
 {
   "name": "trustview-erp-server",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Node.js Express & MongoDB Atlas Backend for TrustView ERP Management Dashboard",
   "main": "src/server.js",
   "type": "module",
