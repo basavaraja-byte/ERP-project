@@ -16,399 +16,22 @@ import {
   Database,
   Sparkles,
   IndianRupee,
-  Info
+  Info,
+  CheckCircle2
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-
-// Master Demonstration Accounts Registered in MongoDB Atlas trustview_erp.users
-const ALL_DEMO_ACCOUNTS = [
-  // 1. TRUSTEE (Trust-Wide)
-  {
-    role: 'TRUSTEE',
-    title: 'Trustee',
-    name: 'Dr. Vikram Mehta',
-    email: 'trustee@trustview.edu',
-    campusId: 'all',
-    campusLabel: 'All 6 Campuses',
-    scope: 'Board of Trustees • Consolidated Trust-Wide',
-    icon: ShieldCheck,
-    color: 'emerald'
-  },
-
-  // 2. CAMPUS 1 (Maharaja Institute of Technology)
-  {
-    role: 'DEAN',
-    title: 'Dean',
-    name: 'Prof. Rajesh Swaminathan',
-    email: 'dean.campus1@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'Academic Oversight • Maharaja Institute of Technology',
-    icon: GraduationCap,
-    color: 'indigo'
-  },
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal',
-    name: 'Dr. K. S. Ramanathan',
-    email: 'principal.campus1@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'Institutional Administration • Maharaja Institute of Technology',
-    icon: Building,
-    color: 'amber'
-  },
-  {
-    role: 'FINANCE_MANAGER',
-    title: 'Finance Manager',
-    name: 'Mr. Anand Srinivasan (CA)',
-    email: 'finance.campus1@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'Finance Controller • Fee Ledgers, Reconciliations & Budgets',
-    icon: IndianRupee,
-    color: 'emerald'
-  },
-  {
-    role: 'HOD',
-    title: 'HOD (Computer Science)',
-    name: 'Dr. Aruna Natarajan',
-    email: 'hod.cs@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'Dept of Computer Science & Engineering',
-    icon: Users,
-    color: 'blue'
-  },
-  {
-    role: 'FACULTY',
-    title: 'Faculty (CSE)',
-    name: 'Prof. Suresh Kumar',
-    email: 'faculty.cs@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'CSE • Computer Networks & Operating Systems',
-    icon: UserCheck,
-    color: 'cyan'
-  },
-  {
-    role: 'STUDENT',
-    title: 'Student (CSE)',
-    name: 'Rahul Sharma',
-    email: 'student.rahul@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'MIT2023-CS-042 • CSE Resident Student',
-    icon: User,
-    color: 'purple'
-  },
-  {
-    role: 'PARENT',
-    title: 'Parent',
-    name: 'Mr. Ramesh Sharma',
-    email: 'parent.sharma@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'Ward: Rahul Sharma (MIT2023-CS-042)',
-    icon: HeartHandshake,
-    color: 'pink'
-  },
-  {
-    role: 'WARDEN',
-    title: 'Hostel Warden',
-    name: 'Col. M. Sundaram',
-    email: 'warden.blocka@trustview.edu',
-    campusId: 'campus-1',
-    campusLabel: 'Campus 1',
-    scope: 'CampusStay • Block A (Boys Hostel)',
-    icon: Home,
-    color: 'orange'
-  },
-
-  // 3. CAMPUS 2 (Maharaja Polytechnic College)
-  {
-    role: 'DEAN',
-    title: 'Dean',
-    name: 'Prof. M. Venkatesan',
-    email: 'dean.campus2@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Academic Oversight • Maharaja Polytechnic College',
-    icon: GraduationCap,
-    color: 'indigo'
-  },
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal',
-    name: 'Prof. M. Anbarasan',
-    email: 'principal.campus2@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Administration • Maharaja Polytechnic College',
-    icon: Building,
-    color: 'amber'
-  },
-  {
-    role: 'FINANCE_MANAGER',
-    title: 'Finance Manager',
-    name: 'Mrs. Jayashree Venkat',
-    email: 'finance.campus2@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Finance Controller • Fee Structures & Cash Flows',
-    icon: IndianRupee,
-    color: 'emerald'
-  },
-  {
-    role: 'HOD',
-    title: 'HOD (Automobile)',
-    name: 'Prof. R. Balaji',
-    email: 'hod.auto@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Automobile Engineering Dept',
-    icon: Users,
-    color: 'blue'
-  },
-  {
-    role: 'FACULTY',
-    title: 'Faculty (Automobile)',
-    name: 'Prof. Deepa Mani',
-    email: 'faculty.auto@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Automobile Engineering • Thermal Engg',
-    icon: UserCheck,
-    color: 'cyan'
-  },
-  {
-    role: 'STUDENT',
-    title: 'Student (Automobile)',
-    name: 'Priya Patel',
-    email: 'student.priya@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'APC2024-AUT-108 • Automobile Engineering',
-    icon: User,
-    color: 'purple'
-  },
-  {
-    role: 'PARENT',
-    title: 'Parent',
-    name: 'Mrs. Gita Patel',
-    email: 'parent.patel@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Ward: Priya Patel (APC2024-AUT-108)',
-    icon: HeartHandshake,
-    color: 'pink'
-  },
-  {
-    role: 'WARDEN',
-    title: 'Hostel Warden',
-    name: 'Mr. P. Murugesan',
-    email: 'warden.polyres@trustview.edu',
-    campusId: 'campus-2',
-    campusLabel: 'Campus 2',
-    scope: 'Polytechnic Residence Facilities',
-    icon: Home,
-    color: 'orange'
-  },
-
-  // 4. CAMPUS 3 (Maharaja College of Arts & Science)
-  {
-    role: 'DEAN',
-    title: 'Dean',
-    name: 'Prof. S. Meenakshi',
-    email: 'dean.campus3@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'Dean of Sciences & Humanities',
-    icon: GraduationCap,
-    color: 'indigo'
-  },
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal',
-    name: 'Dr. Lakshmi Parthasarathy',
-    email: 'principal.campus3@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'Administration • Arts & Science College',
-    icon: Building,
-    color: 'amber'
-  },
-  {
-    role: 'HOD',
-    title: 'HOD (Commerce)',
-    name: 'Dr. N. Sengottaiyan',
-    email: 'hod.commerce@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'Commerce & Accounting Department',
-    icon: Users,
-    color: 'blue'
-  },
-  {
-    role: 'FACULTY',
-    title: 'Faculty (Commerce)',
-    name: 'Prof. Karthik Raja',
-    email: 'faculty.commerce@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'Financial Accounting & Taxation',
-    icon: UserCheck,
-    color: 'cyan'
-  },
-  {
-    role: 'STUDENT',
-    title: 'Student (BCA)',
-    name: 'Ananya Krishnan',
-    email: 'student.ananya@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'ACAS2024-BCA-055 • Computer Applications',
-    icon: User,
-    color: 'purple'
-  },
-  {
-    role: 'PARENT',
-    title: 'Parent',
-    name: 'Mr. K. Krishnan',
-    email: 'parent.krishnan@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'Ward: Ananya Krishnan (ACAS2024-BCA-055)',
-    icon: HeartHandshake,
-    color: 'pink'
-  },
-  {
-    role: 'WARDEN',
-    title: 'Hostel Warden',
-    name: 'Mrs. S. Vasanthi',
-    email: 'warden.cityarts@trustview.edu',
-    campusId: 'campus-3',
-    campusLabel: 'Campus 3',
-    scope: 'City Arts & Science Hall',
-    icon: Home,
-    color: 'orange'
-  },
-
-  // 5. CAMPUS 4 (Maharaja PU College)
-  {
-    role: 'DEAN',
-    title: 'Dean',
-    name: 'Dr. G. Jayaraman',
-    email: 'dean.campus4@trustview.edu',
-    campusId: 'campus-4',
-    campusLabel: 'Campus 4',
-    scope: 'Pre-University & Higher Secondary Academic Head',
-    icon: GraduationCap,
-    color: 'indigo'
-  },
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal',
-    name: 'Mrs. Revathi Sundaram',
-    email: 'principal.campus4@trustview.edu',
-    campusId: 'campus-4',
-    campusLabel: 'Campus 4',
-    scope: 'Pre-University & Higher Secondary Head',
-    icon: Building,
-    color: 'amber'
-  },
-
-  // 6. CAMPUS 5 (Maharaja School)
-  {
-    role: 'DEAN',
-    title: 'Dean',
-    name: 'Dr. Harish Chandra',
-    email: 'dean.campus5@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'Curriculum & Senior Secondary Oversight',
-    icon: GraduationCap,
-    color: 'indigo'
-  },
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal',
-    name: 'Dr. Rajeshwar Rao',
-    email: 'principal.campus5@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'K-12 School Administration',
-    icon: Building,
-    color: 'amber'
-  },
-  {
-    role: 'HOD',
-    title: 'HOD (Secondary)',
-    name: 'Dr. Preeti Shenoy',
-    email: 'hod.mba@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'Senior Secondary Sciences',
-    icon: Users,
-    color: 'blue'
-  },
-  {
-    role: 'STUDENT',
-    title: 'Student',
-    name: 'Aditya Verma',
-    email: 'student.aditya@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'AIMR2024-MBA-019 • Senior Student',
-    icon: User,
-    color: 'purple'
-  },
-  {
-    role: 'PARENT',
-    title: 'Parent',
-    name: 'Mr. Sanjay Verma',
-    email: 'parent.verma@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'Ward: Aditya Verma',
-    icon: HeartHandshake,
-    color: 'pink'
-  },
-  {
-    role: 'WARDEN',
-    title: 'Hostel Warden',
-    name: 'Capt. V. Narayanan',
-    email: 'warden.execmgmt@trustview.edu',
-    campusId: 'campus-5',
-    campusLabel: 'Campus 5',
-    scope: 'School Residential Hall',
-    icon: Home,
-    color: 'orange'
-  },
-
-  // 7. CAMPUS 6 (MIT for Masters)
-  {
-    role: 'PRINCIPAL',
-    title: 'Principal / Director',
-    name: 'Mr. T. Govindaraj',
-    email: 'principal.campus6@trustview.edu',
-    campusId: 'campus-6',
-    campusLabel: 'Campus 6',
-    scope: 'Postgraduate & Research Institute Director',
-    icon: Building,
-    color: 'amber'
-  }
-];
+import { ALL_DEMO_ACCOUNTS } from '../../data/demoAccounts';
 
 export default function LoginPage({
   selectedCampus = null,
   onBackToAllCampuses,
   isTrusteeMode = false
 }) {
-  const { login, error: authError, isLoading } = useAuth();
+  const { login, authError, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [localError, setLocalError] = useState('');
+  const [selectedPersona, setSelectedPersona] = useState(null);
 
   // Default campus fallback if accessed directly
   const activeCampus = selectedCampus || {
@@ -427,10 +50,23 @@ export default function LoginPage({
   const trusteeAccount = ALL_DEMO_ACCOUNTS.find((acc) => acc.role === 'TRUSTEE');
 
   // Handle prefill on demo persona click
-  const handleSelectDemoAccount = (acc) => {
+  const handleSelectDemoAccount = (acc, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setSelectedPersona(acc);
     setEmail(acc.email);
     setPassword('TrustView@2026');
     setLocalError('');
+
+    // Smoothly scroll to the login form on small/mobile screens
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      const formEl = document.getElementById('login-form-panel');
+      if (formEl) {
+        formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -498,7 +134,10 @@ export default function LoginPage({
         {/* 2-Column Desktop Grid: Login Form + Campus Configured Accounts */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-2">
           {/* Column 1: Secure Sign In Form */}
-          <div className="lg:col-span-5 bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 sm:p-7 shadow-2xl backdrop-blur-xl space-y-5">
+          <div
+            id="login-form-panel"
+            className="lg:col-span-5 bg-slate-800/90 border border-slate-700/80 rounded-2xl p-6 sm:p-7 shadow-2xl backdrop-blur-xl space-y-5"
+          >
             <div className="flex items-center justify-between pb-4 border-b border-slate-700/60">
               <div>
                 <h2 className="text-base sm:text-lg font-bold text-white">Secure Sign In</h2>
@@ -513,6 +152,23 @@ export default function LoginPage({
               <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-2.5 text-xs text-rose-300">
                 <AlertCircle size={16} className="shrink-0 mt-0.5 text-rose-400" />
                 <span>{localError || authError}</span>
+              </div>
+            )}
+
+            {/* Persona Populated Banner */}
+            {selectedPersona && (
+              <div className="p-3 rounded-xl bg-blue-500/15 border border-blue-500/40 flex items-center justify-between text-xs text-blue-200">
+                <div className="flex items-center gap-2.5 truncate">
+                  <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
+                  <div className="truncate">
+                    <span className="font-bold text-white">{selectedPersona.title}</span>
+                    <span className="text-slate-300 ml-1.5 font-medium">({selectedPersona.name})</span>
+                    <div className="text-[10px] text-slate-400 font-mono truncate">{selectedPersona.email}</div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md shrink-0">
+                  Ready
+                </span>
               </div>
             )}
 
@@ -568,7 +224,9 @@ export default function LoginPage({
                     </span>
                   ) : (
                     <>
-                      <span>Sign In to Dashboard</span>
+                      <span>
+                        {selectedPersona ? `Sign In as ${selectedPersona.title}` : 'Sign In to Dashboard'}
+                      </span>
                       <ArrowRight size={16} />
                     </>
                   )}
@@ -600,33 +258,47 @@ export default function LoginPage({
             {trusteeAccount && (
               <button
                 type="button"
-                onClick={() => handleSelectDemoAccount(trusteeAccount)}
-                className={`w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between gap-3 cursor-pointer ${
+                onClick={(e) => handleSelectDemoAccount(trusteeAccount, e)}
+                className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 cursor-pointer group ${
                   email === trusteeAccount.email
-                    ? 'bg-emerald-600/20 border-emerald-500 ring-2 ring-emerald-500/30'
-                    : 'bg-emerald-950/30 hover:bg-emerald-900/40 border-emerald-700/60'
+                    ? 'bg-emerald-600/25 border-emerald-400 ring-2 ring-emerald-500/40 shadow-lg shadow-emerald-950/40'
+                    : 'bg-emerald-950/30 hover:bg-emerald-900/40 border-emerald-700/60 hover:border-emerald-600'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                    <ShieldCheck size={16} />
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                    <ShieldCheck size={18} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-xs text-emerald-300">Board of Trustees</span>
                       <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-800/80 text-emerald-100">
                         Consolidated Trust-Wide
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-300">{trusteeAccount.name} ({trusteeAccount.email})</div>
+                    <div className="text-[11px] text-slate-300 truncate">
+                      {trusteeAccount.name} <span className="text-slate-400 font-mono">({trusteeAccount.email})</span>
+                    </div>
                   </div>
                 </div>
-                <span className="text-xs text-emerald-400 font-semibold shrink-0">Use Credential →</span>
+                <div className="shrink-0 flex items-center gap-1">
+                  {email === trusteeAccount.email ? (
+                    <span className="text-xs text-emerald-300 font-bold inline-flex items-center gap-1 bg-emerald-500/20 px-2 py-0.5 rounded-md border border-emerald-500/40">
+                      <CheckCircle2 size={13} />
+                      <span>Populated</span>
+                    </span>
+                  ) : (
+                    <span className="text-xs text-emerald-400 font-semibold group-hover:text-emerald-300 inline-flex items-center gap-0.5">
+                      <span>Use Credential</span>
+                      <ArrowRight size={13} />
+                    </span>
+                  )}
+                </div>
               </button>
             )}
 
             {/* Campus Accounts Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
               {campusAccounts.map((acc, idx) => {
                 const IconComponent = acc.icon;
                 const isSelected = email === acc.email;
@@ -635,25 +307,51 @@ export default function LoginPage({
                   <button
                     key={`${acc.role}-${acc.email}-${idx}`}
                     type="button"
-                    onClick={() => handleSelectDemoAccount(acc)}
-                    className={`text-left p-3 rounded-xl border transition-all flex items-start gap-3 cursor-pointer ${
+                    onClick={(e) => handleSelectDemoAccount(acc, e)}
+                    className={`text-left p-3 rounded-xl border transition-all flex flex-col justify-between gap-2 cursor-pointer group ${
                       isSelected
-                        ? 'bg-blue-600/20 border-blue-500 ring-2 ring-blue-500/30'
-                        : 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-600'
+                        ? 'bg-blue-600/25 border-blue-400 ring-2 ring-blue-500/40 shadow-lg shadow-blue-950/30'
+                        : 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-500'
                     }`}
                   >
-                    <div className="w-8 h-8 rounded-lg bg-slate-700/70 flex items-center justify-center shrink-0 mt-0.5 text-blue-400">
-                      <IconComponent size={16} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="font-semibold text-xs text-white truncate">{acc.title}</span>
-                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-700/80 text-slate-300 shrink-0">
-                          {acc.campusLabel}
-                        </span>
+                    <div className="flex items-start gap-3 w-full">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                        isSelected ? 'bg-blue-500 text-white' : 'bg-slate-700/70 text-blue-400 group-hover:bg-slate-700'
+                      }`}>
+                        <IconComponent size={16} />
                       </div>
-                      <p className="text-[11px] text-slate-300 truncate">{acc.name}</p>
-                      <p className="text-[10px] text-slate-400 truncate mt-0.5">{acc.scope}</p>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-semibold text-xs text-white truncate">{acc.title}</span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-700/80 text-slate-300 shrink-0">
+                            {acc.campusLabel}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-300 truncate font-medium">{acc.name}</p>
+                        <p className="text-[10px] text-slate-400 truncate mt-0.5">{acc.scope}</p>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Row: Email & Explicit Use Credential Action */}
+                    <div className="w-full pt-2 border-t border-slate-700/50 flex items-center justify-between text-[11px]">
+                      <span className="font-mono text-slate-400 text-[10px] truncate max-w-[140px]">
+                        {acc.email}
+                      </span>
+                      <span className={`text-[10px] font-semibold inline-flex items-center gap-1 ${
+                        isSelected ? 'text-emerald-400 font-bold' : 'text-blue-400 group-hover:text-blue-300'
+                      }`}>
+                        {isSelected ? (
+                          <>
+                            <CheckCircle2 size={12} className="text-emerald-400" />
+                            <span>Populated</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Use Credential</span>
+                            <ArrowRight size={11} />
+                          </>
+                        )}
+                      </span>
                     </div>
                   </button>
                 );
