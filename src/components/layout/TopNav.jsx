@@ -302,7 +302,7 @@ export default function TopNav({
                     <span className="text-slate-600 font-medium">Node.js Express API:</span>
                     <span className={`font-semibold flex items-center gap-1.5 ${apiHealth.isOnline ? 'text-emerald-700' : 'text-slate-600'}`}>
                       <span className={`w-2 h-2 rounded-full ${apiHealth.isOnline ? 'bg-emerald-500' : 'bg-slate-400'}`} />
-                      {apiHealth.isOnline ? 'Online (Port 5000)' : 'Offline (Local Fallback)'}
+                      {apiHealth.isOnline ? 'Online (Connected)' : 'Standby (Synthetic Cache)'}
                     </span>
                   </div>
 

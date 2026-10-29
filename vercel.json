@@ -3,7 +3,11 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/((?!api/|assets/|favicon\\.svg|icons\\.svg).*)",
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/((?!assets/|favicon\\.svg|icons\\.svg).*)",
       "destination": "/index.html"
     }
   ],

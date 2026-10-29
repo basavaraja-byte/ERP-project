@@ -72,8 +72,9 @@ app.get('/', (req, res) => {
   });
 });
 
-// Mount modular API routes under /api
+// Mount modular API routes under /api and / for seamless serverless & standalone support
 app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // Error handlers
 app.use(notFoundHandler);
