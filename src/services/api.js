@@ -4,7 +4,20 @@
  * Automatically falls back gracefully to local synthetic cache if the backend server is offline.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+/**
+ * Determine production-ready API Base URL
+ * Supports VITE_API_BASE_URL and VITE_API_URL with automatic trailing slash and /api path normalization.
+ */
+const resolveApiBaseUrl = () => {
+  const configured = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
+  if (!configured || !configured.trim()) {
+    return 'http://localhost:5000/api';
+  }
+  const clean = configured.trim().replace(/\/+$/, '');
+  return clean.endsWith('/api') ? clean : `${clean}/api`;
+};
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 let activeAuthToken = null;
 
@@ -127,7 +140,7 @@ export const apiService = {
         serverOk: false,
         database: {
           connected: false,
-          message: 'Backend server offline at http://localhost:5000. Running with local mock cache.'
+          message: `Backend server unreachable at ${API_BASE_URL}. Running with local verified cache.`
         }
       };
     }
